@@ -1,0 +1,21 @@
+{
+  "name": "node_blog",
+  "description": "",
+  "main": "",
+  "authors": [
+    "qsm <348867341@qq.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/qiansimin88/blog",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
