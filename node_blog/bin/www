@@ -5,13 +5,14 @@
  */
 
 var app = require('../app');
+//日志记录器 通过SET DEBUG变量来修改
 var debug = require('debug')('node_blog:server');
 var http = require('http');
 
 /**
  * Get port from environment and store in Express.
+ * 从环境变量中获取端口号 保存到app中
  */
-
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
@@ -26,7 +27,9 @@ var server = http.createServer(app);
  */
 
 server.listen(port);
+//监听出错
 server.on('error', onError);
+//监听
 server.on('listening', onListening);
 
 /**
@@ -64,10 +67,13 @@ function onError(error) {
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
+    //端口数字太低 需要权限才能开启
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
+      //退出进程 1代表错误退出  0代表正常退出
       process.exit(1);
       break;
+      //端口占用
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
       process.exit(1);

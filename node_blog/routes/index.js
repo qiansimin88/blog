@@ -1,4 +1,5 @@
 var express = require('express');
+//生成路由实例
 var router = express.Router();
 
 /* GET home page. */
