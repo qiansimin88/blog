@@ -8,6 +8,7 @@ router.get('/reg', function(req, res, next) {
 });
 //接受注册的表单
 router.post('/reg', function(req, res, next) {
+    //post提价 有请求体 所以用req.body获得请求对象
     var userInfo = req.body
 });
 //登录
