@@ -9,13 +9,19 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 //处理请求体 req.body 存放post的请求体
 var bodyParser = require('body-parser');
+
+
 //主页路由
 var routes = require('./routes/index');
 //用户路由
 var users = require('./routes/users');
+//文章的路由
+var articles = require('./routes/articles');
 
 var app = express();
 
+//设置开发环境
+app.set('env', process.env.ENV)
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
@@ -44,21 +50,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 //配置路由处理函数   /的走routers函数处理  /users的走users函数处理
 app.use('/', routes);
 app.use('/users', users);
+app.use('/articles', articles);
 
-// catch 404 and forward to error handler
+
+
+// 捕获404并转发到错误处理中间件
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-// error handlers
+// 错误处理  因为NExt只会向下一个中间件跳转  所有执行了开发时的时候就不会执行生成环境的错误处理了
+// 除非开发环境下的中间件  也有netx（）
 
-// development error handler
-// will print stacktrace
+//开发时的错误处理
+// 打印出错误的堆栈  
 if (app.get('env') === 'development') {
+  //错误处理中间件 有四个参数    
+
+  //如果有中间件出错 会把请求交给错误处理中间件处理
   app.use(function(err, req, res, next) {
+    //设置中间件
     res.status(err.status || 500);
+    //渲染模板
     res.render('error', {
       message: err.message,
       error: err
@@ -66,13 +81,13 @@ if (app.get('env') === 'development') {
   });
 }
 
-// production error handler
-// no stacktraces leaked to user
+// 生成环境下的错误处理
+// 不向用户保罗错误信息
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
-    error: {}
+    error: {}   //不显示错误信息
   });
 });
 
