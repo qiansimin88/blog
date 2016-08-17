@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/qiansimin88/blog/issues"
   },
-  "homepage": "https://github.com/qiansimin88/blog#readme"
+  "homepage": "https://github.com/qiansimin88/blog#readme",
+  "dependencies": {
+    "crypto": "0.0.3"
+  }
 }
