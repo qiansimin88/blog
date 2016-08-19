@@ -9,8 +9,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 //处理请求体 req.body 存放post的请求体
 var bodyParser = require('body-parser');
+//引入session中间件 req.session
+var session = require('express-session')
+//引入mongo链接中间件 把session传入  存入session的时候 就会保存到数据库了
+var MongoStrore = require('connect-mongo')(session)
+//flash模块
+var flash = require('connect-flash')
 
-
+var config = require('../config')
 //主页路由
 var routes = require('./routes/index');
 //用户路由
@@ -42,6 +48,28 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //处理cookie的中间件 req.cookie res.cookie(key, value)
 app.use(cookieParser());
+app.use(session({
+  secret: 'qsm',  
+  resave:true,    //每次响应结束都保存
+  saveUninitialized:true,  //保存新创建但未初始化的
+  store: new MongoStrore({  //指定session存储的位置
+    url: config.dbUrl    //指定数据库的路径
+  })
+}))
+
+//依赖session  必须写在session模块的后面
+app.use(flash())
+ //注入session到模板的中间件
+ //获得session里面的user (登录过后session会存入user属性)  有的话登录了  没有的话 没登录
+  //并且是从数据库取得  网页关掉也没关系
+app.use((req, res, next) => {
+  //res.local就是渲染模板的时候给模板的对象
+  res.locals.isLogin = req.session.user
+  res.locals.success = req.flash('success').toString()
+  res.locals.error = req.flash('error').toString()
+  next()
+})  
+
 
 //设置静态文件服务中间价
 app.use(express.static(path.join(__dirname, 'public')));

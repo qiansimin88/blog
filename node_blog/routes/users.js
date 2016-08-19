@@ -17,7 +17,11 @@ router.post('/reg', function(req, res, next) {
     req.body.password = Util.md5(req.body.password)
     //保存到数据库有两张方法，model用create, entity用save
     Model.User.create(req.body, (err, doc) => {
-      if(err) return console.log('保存失败了')
+      if(err) {
+        req.flash('error', '用户注册失败')
+        return console.log('保存失败了')
+      }
+      req.flash('success', '用户注册成功')
       console.log(`保存成功${doc}`)
       //跳转到登录页
       res.redirect('/users/login')
@@ -37,13 +41,18 @@ router.post('/login', (req, res, next) => {
   Model.User.findOne(req.body, (err, doc) => {
     if(err) {
       console.log(err)   
+      req.flash('error', '用户登录失败')
       //出错就返回
       res.redirect('back')
     }else {
       //搜索到了就去首页
       if(doc) {
+        //登录成功把查询到的user用户赋给session的user属性 因为有connect-mongo中间件 所以直接保存到数据库
+        req.session.user = doc
+        req.flash('success', '用户登录成功')
         res.redirect('/')
       }else {
+        req.flash('error', '用户登录失败')
         //没搜索到 返回的是个Null  
         res.redirect('back')
       }
@@ -53,7 +62,9 @@ router.post('/login', (req, res, next) => {
 
 //退出
 router.get('/logout', function(req, res, next) {
-   res.render('logout', { title: '退出' });
+  req.session.user = null  //删除session的值 同时删除数据库的值
+  req.flash('success', '退出登录成功')
+  res.redirect('/')
 });
  
 module.exports = router;

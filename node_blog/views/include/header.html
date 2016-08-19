@@ -25,10 +25,15 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="active"><a href="/">Link <span class="sr-only">(current)</span></a></li>
-          <li><a href="/users/reg">注册</a></li>
-          <li><a href="/users/login">登录</a></li>
-          <li><a href="/articles/published">发表文章</a></li>
-          <li><a href="/users/logout">退出</a></li>
+          <!--登录的状态-->
+          <% if(isLogin) {%>
+            <li><a href="/articles/published">发表文章</a></li>
+            <li><a href="/users/logout">退出</a></li>
+          <%  } else { %>
+          <!--未登录的状态-->
+            <li><a href="/users/reg">注册</a></li>
+            <li><a href="/users/login">登录</a></li>
+          <% } %>
         </ul>
         <form class="navbar-form navbar-left" role="search">
           <div class="form-group">
@@ -41,3 +46,16 @@
     </div>
     <!-- /.container-fluid -->
   </nav>
+
+  <!--弹框flash-->
+<% if(success) {%>
+  <!--success-->
+  <div class="alert alert-success" role="alert">
+      <a href="#" class="alert-link"><%= success%></a>
+  </div>
+<%} else if(error) {%>
+<!--error-->
+  <div class="alert alert-danger" role="alert">
+    <a href="#" class="alert-link"><%= error%></a>
+  </div>
+<%} %>
