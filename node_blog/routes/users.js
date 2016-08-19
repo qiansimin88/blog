@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+//权限控制中间件
+var auth = require('../middleware/auth')
 
 //数据库的模型
 var Model = require('../models')
@@ -7,11 +9,11 @@ var Util = require('../../util')
 
 /* GET users listing. */
 //注册页面
-router.get('/reg', function(req, res, next) {
-   res.render('user/reg.html', { title: '注册' });
+router.get('/reg', auth.noAuth, function(req, res, next) {
+   res.render('user/reg.html', { title: '注册', 'urlPath':'reg'});
 });
 //接受注册的表单
-router.post('/reg', function(req, res, next) {
+router.post('/reg', auth.noAuth, function(req, res, next) {
     //post提价 有请求体 所以用req.body获得请求对象
     //MD5加密
     req.body.password = Util.md5(req.body.password)
@@ -28,12 +30,12 @@ router.post('/reg', function(req, res, next) {
     })
 });
 //登录页面
-router.get('/login', function(req, res, next) {
+router.get('/login', auth.noAuth, function(req, res, next) {
    res.render('user/login', { title: '登录' });
 });
 
 //登录时查询数据库
-router.post('/login', (req, res, next) => {
+router.post('/login', auth.noAuth, (req, res, next) => {
   console.log(req.body)
   //加密为了和数据库已经加密的保持一致
   req.body.password = Util.md5(req.body.password)
@@ -61,7 +63,7 @@ router.post('/login', (req, res, next) => {
 })
 
 //退出
-router.get('/logout', function(req, res, next) {
+router.get('/logout', auth.needAuth, function(req, res, next) {
   req.session.user = null  //删除session的值 同时删除数据库的值
   req.flash('success', '退出登录成功')
   res.redirect('/')
