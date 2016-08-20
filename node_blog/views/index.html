@@ -1,3 +1,24 @@
 <%- include include/header.html%>
-
+    <h2 style="font-size: 20px; border-bottom:1px dashed #000">文章列表（支持markdown语法）</h2>
+    <% articles.forEach((o, i) => { %>
+    <!--文章列表-->
+    <div class="media">
+        <div class="media-left">
+            <a href="#">
+             <img class="media-object avatar" src="http://school.zhufengpeixun.cn/assets/img/default/avatar.png?6.8.4" alt="...">
+            </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading"><%= o.title %></h4>
+            <p><%- o.content %></p>
+        </div>
+        <div class="media-bottom">
+            作者： <%= o.user.username %>
+            发表时间： <%= o.createAt.toLocaleString()  %>
+        </div>
+    </div>
+  <%  }) %>
 <%- include include/footer.html%>
+<style>
+.avatar {width:50px; height:50px; border-radius: 50%}
+</style>

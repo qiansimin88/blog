@@ -15,5 +15,17 @@ db.connection.on('open', () => {
 exports.User = db.model('user', new mongoose.Schema({
     username: String,
     password: String,
-    email: String
+    email: String,
+    avatar: String
+}))
+
+
+//发表文章
+exports.Article = db.model('article', new mongoose.Schema({
+    //是一个对象ID类型， 引用上面的user模型 为什么是objectId类型呢  因为user字段是必须是数据库里面的才可以  比较特殊 
+    // 不是随意写的
+    user: {type: mongoose.Schema.Types.ObjectId , ref: 'user'},
+    title: String,
+    content: String,
+    createAt: { type: Date, default: Date.now() },
 }))
