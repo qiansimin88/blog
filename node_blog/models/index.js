@@ -27,5 +27,6 @@ exports.Article = db.model('article', new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId , ref: 'user'},
     title: String,
     content: String,
+    poster: String,         //上传的图片
     createAt: { type: Date, default: Date.now() },
 }))

@@ -11,6 +11,9 @@
         <div class="media-body">
             <h4 class="media-heading"><%= o.title %></h4>
             <p><%- o.content %></p>
+            <% if(o.poster) {%>
+                <p><img src=<%= o.poster %> alt=""></p>
+            <% } %>
         </div>
         <div class="media-bottom">
             作者： <%= o.user.username %>
@@ -18,6 +21,29 @@
         </div>
     </div>
   <%  }) %>
+  <!--分页-->
+  <!--总页数大于1的时候才会显示分页哦-->
+  <nav style="display: <%= totalPage > 1 ? 'blcok' : 'none' %>">
+        <ul class="pagination">
+            <% if(pageNum > 1 ) {%>
+            <li>
+                <a href="/?searchword=<%= searchword %>&pageNum=<%= pageNum-1 %>&pageSize=<%= pageSize %>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <% } %>
+                <% for(var i = 1; i <= totalPage; i ++) {%>
+                    <li class="<%= i == pageNum ?  'active' : '' %>"><a href="/?searchword=<%= searchword %>&pageNum=<%= i %>&pageSize=<%= pageSize %>"><%= i %></a></li>
+                <% } %>
+            <% if(pageNum < totalPage) {%>
+                <li>
+                    <a href="/?searchword=<%= searchword %>&pageNum=<%= pageNum+1 %>&pageSize=<%= pageSize %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+  </nav>
 <%- include include/footer.html%>
 <style>
 .avatar {width:50px; height:50px; border-radius: 50%}

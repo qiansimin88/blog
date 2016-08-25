@@ -66,6 +66,8 @@ app.use((req, res, next) => {
   //res.local就是渲染模板的时候给模板的对象
   res.locals.isLogin = req.session.user
   res.locals.success = req.flash('success').toString()
+  //每个页面都设置空的搜索字段 防止报错
+  res.locals.searchword = '' 
   res.locals.error = req.flash('error').toString()
   next()
 })  
