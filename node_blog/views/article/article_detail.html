@@ -1,0 +1,60 @@
+<%- include ../include/header.html%>
+<!--文章详情-->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <%= detail.title %>
+        </div>
+        <div class="panel-body">
+            <%- detail.content %>
+            <% if (!!detail.poster) {%>
+            <img src="<%= detail.poster %>" alt="">
+            <% } %>
+        </div>
+        <div class="panel-footer">
+            <a href="/articles/edit/<%= detail._id %>" class="btn btn-warning">编辑</a>
+            <a href="/articles/delete/<%= detail._id %>" class="btn btn-danger">删除</a>
+        </div>
+    </div>
+
+    <!--评论列表-->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            评论列表
+        </div>
+        <div class="panel-body"  style="height:300px;overflow-y: scroll">
+            <ul class="media-list">
+                <%
+                detail.comments.forEach(function(comment){
+                %>
+                <li class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" src="<%= comment.user.avatar%>" alt="">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p class="media-left"><%- comment.content%></p>
+                    </div>
+                    <div class="media-bottom">
+                        <%=comment.user.username%> <%=comment.createAt.toLocaleString()%>
+                    </div>
+                </li>
+                <%
+                });
+                %>
+            </ul>
+        </div>
+    </div>
+    <!--评论-->
+     <div class="panel panel-default">
+        <form action="/articles/comment" method="post">
+            <input type="hidden" value="<%= detail._id%>" name="_id"/>
+            <div class="panel-body">
+                <textarea class="form-control"   id="" cols="30" rows="10" id="content" name="content" placeholder="请输入评论" ></textarea>
+            </div>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-default">提交</button>
+            </div>
+        </form>
+    </div>
+<%- include ../include/footer.html%>
