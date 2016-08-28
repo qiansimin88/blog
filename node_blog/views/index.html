@@ -50,7 +50,22 @@
             <% } %>
         </ul>
   </nav>
+  <button type="button" class="btn btn-success" id="showarticle">显示文章的列表</button>
 <%- include include/footer.html%>
 <style>
 .avatar {width:50px; height:50px; border-radius: 50%}
 </style>
+<script>
+    var btn = $('#showarticle')
+
+    btn.on('click', function () {
+        $.ajax({
+            url: '/articles/articleList',
+            methods: 'get',
+            data: {number: 2},
+            success: function (result) {
+                console.log(result)
+            }
+        })
+    })
+</script>

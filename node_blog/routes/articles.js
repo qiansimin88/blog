@@ -127,5 +127,22 @@ router.post('/comment', auth.needAuth, function (req, res) {
    });
 });
 
+//查看文章列表
+router.get('/articleList', (req, res) => {
+    var num = req.query.number
+
+    models.Article.find({}, null, {limit: ~~num}, (err, resulte) => {
+        if(err) {
+            res.json({
+                errMsg: 'search error',
+                errCode: err.statusCode
+            })
+        }
+        res.json({
+            result: resulte
+        })
+    })
+})
+
 //导出
 module.exports = router 
