@@ -1,0 +1,11 @@
+<%- include ../include/header.html%>
+ <p>用户名：<%= info.username %></p>
+ <p>头像:<img src="<%= info.avatar %>" alt=""></p>
+ <p>
+     修改头像：
+     <form action="/users/updateuserinfo" method="post" enctype="multipart/form-data" class="form-horizontal">
+         <input class="form-control" type="file" name="avatar" value="">
+         <input type="submit" name="submit" value="提交">
+     </form>
+ </p>
+<%- include ../include/footer.html%>

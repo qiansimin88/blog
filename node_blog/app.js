@@ -77,6 +77,15 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
+//设置html的头部activeclass中间件
+app.use((req, res, next) => {
+  var activeActive = req.originalUrl
+  res.locals.activeActive = activeActive
+  next()
+})
+
+
 //配置路由处理函数   /的走routers函数处理  /users的走users函数处理
 app.use('/', routes);
 app.use('/users', users);

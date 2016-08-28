@@ -6,6 +6,25 @@ var auth = require('../middleware/auth')
 //数据库的模型
 var Model = require('../models')
 var Util = require('../../util')
+//存储图片等的中间件
+var path = require('path')
+var multer = require('multer')
+var imageStoreURL = path.join(__dirname,'../public','uploads')
+
+var markdown = require('markdown').markdown
+
+//指定存储目录和文件名
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, imageStoreURL)
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname + '-' + Date.now())
+  }
+})
+
+var upload = multer({ storage: storage })
+
 
 /* GET users listing. */
 //注册页面
@@ -36,7 +55,6 @@ router.get('/login', auth.noAuth, function(req, res, next) {
 
 //登录时查询数据库
 router.post('/login', auth.noAuth, (req, res, next) => {
-  console.log(req.body)
   //加密为了和数据库已经加密的保持一致
   req.body.password = Util.md5(req.body.password)
   //在数据库中查询相应的usename和password 
@@ -61,6 +79,39 @@ router.post('/login', auth.noAuth, (req, res, next) => {
     }
   })
 })
+
+// 个人信息
+router.get('/userinfo', auth.needAuth, (req, res, next) => {
+  var userId = req.session.user 
+  Model.User.findById(userId, (err, result) => {
+    if(err) {
+      req.flash('error', '查询失败')
+      res.redirect('/')
+    }
+   res.render('user/info.html', { info: result });
+  })
+})
+
+// 修改个人信息(目前只有头像)
+router.post('/updateuserinfo',upload.single('avatar'), auth.needAuth, (req, res, next) => {
+  var userId = req.session.user 
+  var avatar = req.body
+ if(req.file) {
+        //存储文件的路径  为什么是/uploads  以‘/’开头呢  因为设置了静态文件服务器  /就是设置的public
+       avatar.avatar = '/uploads/'+req.file.filename
+  }
+  console.log(avatar)
+  
+  Model.User.update(userId,avatar,(err, result) => {
+    if(err) {
+      req.flash('error', '查询失败')
+      res.redirect('/')
+    }
+      res.redirect('/')
+  })
+})
+
+
 
 //退出
 router.get('/logout', auth.needAuth, function(req, res, next) {
