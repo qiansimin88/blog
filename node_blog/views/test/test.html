@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<input type="file" accept="" multiple id="FileList">
+<img alt="" id="preview">
+<a id='send' href="javascript:;">发送</a>
+</body>
+<script>
+    //创建xhr对象
+   var xhr = new XMLHttpRequest()
+   //设置请求的延迟时间
+   xhr.timeout = 3000
+   //设置响应的文本类型  告诉服务器我希望得到的数据类型
+   xhr.responseType = 'text'
+   //创建一个😳待发送的服务器请求 默认是true async的异步请求
+   xhr.open('POST', 'xhrrequest'， true)
+   xhr.setRequestHeader('Content-type', 'text/plain;charset=utf-8')
+   xhr.send()
+
+   xhr.onreadystatechange = function () {
+    console.log(xhr.readyState)
+    console.log(xhr.status)
+    console.log(xhr.responseText)
+    console.log(xhr.statusText)
+    console.log('-------------')
+   }
+
+   {
+        var formData = new FormData() 
+        formData.append('username', 'qiansimin')   
+        FormData.append('age', 14)
+   }
+   
+
+</script>
+</html>

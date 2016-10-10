@@ -24,6 +24,9 @@ var users = require('./routes/users');
 //文章的路由
 var articles = require('./routes/articles');
 
+//test
+var tests = require('./routes/test')
+
 var app = express();
 
 //设置开发环境
@@ -90,6 +93,8 @@ app.use((req, res, next) => {
 app.use('/', routes);
 app.use('/users', users);
 app.use('/articles', articles);
+app.use('/test', tests);
+
 
 
 
