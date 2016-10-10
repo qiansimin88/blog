@@ -10,31 +10,51 @@
 <a id='send' href="javascript:;">发送</a>
 </body>
 <script>
+
+   //创建一个表单对象
+   var formData = new FormData() 
+        formData.append('username', 'qiansimin');   
+        formData.append('age', "14");
+
     //创建xhr对象
    var xhr = new XMLHttpRequest()
    //设置请求的延迟时间
    xhr.timeout = 3000
    //设置响应的文本类型  告诉服务器我希望得到的数据类型
-   xhr.responseType = 'text'
    //创建一个😳待发送的服务器请求 默认是true async的异步请求
-   xhr.open('POST', 'xhrrequest'， true)
-   xhr.setRequestHeader('Content-type', 'text/plain;charset=utf-8')
-   xhr.send()
-
+   xhr.open('POST', 'xhrrequest', true)
+   xhr.responseType = 'text'
+   //设置请求头 要写在open方法的后面
    xhr.onreadystatechange = function () {
     console.log(xhr.readyState)
     console.log(xhr.status)
-    console.log(xhr.responseText)
     console.log(xhr.statusText)
     console.log('-------------')
+    if(xhr.readyState == 4 && xhr.status === 200) {
+        // console.log(xhr.responseText)
+        console.log(typeof xhr.response)
+        console.log(xhr.getResponseHeader('Connection'))
+        console.log(xhr.getAllResponseHeaders())
+
+    }
    }
 
-   {
-        var formData = new FormData() 
-        formData.append('username', 'qiansimin')   
-        FormData.append('age', 14)
-   }
-   
+   //设置各种回调
+    //响应超时的回调
+    xhr.ontimeout = function (e) {
+        console.log(e)
+    }
+    //请求失败的回调
+    xhr.onerror = function (e) {
+        console.log(e)
+    }
+    //注册请求过程的回调
+    xhr.upload.onprogress = function (e) {
+        console.log(e)   //e.loaded:已经载入的数据  e.total:总共的数据量
+    }
+    //发送请求
+   xhr.send(formData)
+
 
 </script>
 </html>

@@ -7,7 +7,7 @@ router.get('/http', (req, res, next) => {
 
 router.post('/xhrrequest', (req, res, next) => {
     console.log(req.body)
-    res.send('sSA')
+    res.send('ads')
 })
 
 
